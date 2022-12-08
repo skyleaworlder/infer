@@ -128,11 +128,11 @@ jobs:
       #- name: Test infer
       #  run: make test -k NDKBUILD=no
 
-      - run: |
-          sudo make install BUILD_MODE=opt
+      #- run: |
+      #    sudo make install BUILD_MODE=opt
           # restore permissions after root build
-          sudo chown $USER: -R .
-        if: runner.os == 'Linux'
+      #    sudo chown $USER: -R .
+      #  if: runner.os == 'Linux'
 
       - name: Build release tarball
         id: build-release
