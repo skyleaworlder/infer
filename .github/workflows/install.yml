@@ -125,8 +125,8 @@ jobs:
           opam install ocamlformat
           opam exec -- ocamlformat --version
 
-      - name: Test infer
-        run: make test -k NDKBUILD=no
+      #- name: Test infer
+      #  run: make test -k NDKBUILD=no
 
       - run: |
           sudo make install BUILD_MODE=opt
@@ -136,7 +136,6 @@ jobs:
 
       - name: Build release tarball
         id: build-release
-        if: startsWith(github.ref, 'refs/tags/v')
         run: |
           ./scripts/create_binary_release.sh "$(echo '${{ github.ref }}' | rev | cut -d / -f 1 | rev)"
 
@@ -150,3 +149,9 @@ jobs:
           asset_path: ${{ steps.build-release.outputs.tarball-path }}
           asset_name: ${{ steps.build-release.outputs.tarball-path }}
           asset_content_type: application/x-gtar
+          
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifact ${{ matrix.os }}
+          path: ${{ steps.build-release.outputs.tarball-path }}
